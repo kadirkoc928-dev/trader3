@@ -277,13 +277,33 @@ if st.button("🚀 ALLE AKTIEN SCANNEN", type="primary", use_container_width=Tru
                 col7.markdown(f"<span style='color:{row['WT_Color']};font-size:12px'>{row['Wavetrend']}</span>", unsafe_allow_html=True)
                 col8.markdown(f"<span style='color:{'#00ff88' if row['MACD']=='Bullish' else '#ff4444'}'>{row['MACD']}</span>", unsafe_allow_html=True)
                 col9.markdown(f"[📈 Chart]({row['Chart']})")
-                if i < len(df_filtered) - 1: st.divider()
-            
-            csv = df_filtered.to_csv(index=False)
+               csv = df_filtered.to_csv(index=False)
             st.download_button(f"📥 {len(df_filtered)} Ergebnisse als CSV", csv, f"scan_{datetime.now().strftime('%Y%m%d_%H%M')}.csv", 'text/csv')
             
             st.markdown("---")
             st.subheader("🏆 Top 10 Details")
             top10 = df_filtered.head(10)
             for i, (_, row) in enumerate(top10.iterrows()):
-                with st
+                with st.expander(f"#{i+1} {row['Ticker']} | Score: {row['Swing-Score']}/100 | ${row['Preis']:.2f}", expanded=(i<3)):
+                    c1, c2, c3, c4 = st.columns(4)
+                    with c1:
+                        st.metric("Score", f"{row['Swing-Score']}/100")
+                        st.metric("Preis", f"${row['Preis']:.2f}")
+                    with c2:
+                        st.metric("RSI", f"{row['RSI']:.1f}")
+                        st.metric("ADX", f"{row['ADX']:.1f}")
+                    with c3:
+                        st.metric("ATR%", f"{row['ATR%']:.2f}%")
+                        st.metric("Vol Ratio", f"{row['Vol Ratio']:.2f}x")
+                    with c4:
+                        st.metric("SMA20", row['SMA20'])
+                        st.metric("MACD", row['MACD'])
+                    st.markdown(f"🌊 **Wavetrend:** {row['Wavetrend']}")
+                    st.markdown(f"[📈 TradingView 1-Tages-Chart]({row['Chart']})")
+        else:
+            st.warning(f"⚠️ Keine Aktien mit Score ≥{min_score}. Filter lockern!")
+    else:
+        st.error("❌ Keine Ergebnisse! Cache leeren & neu versuchen.")
+
+st.markdown("---")
+st.caption(f"⚠️ Keine Finanzberatung | Yahoo Finance (verzögert) | {datetime.now().strftime('%d.%m.%Y %H:%M')}")
