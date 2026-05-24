@@ -364,6 +364,3 @@ if st.button("🚀 ELITE SCAN STARTEN", type="primary", use_container_width=True
                 cols[9].markdown("[📈](" + str(row['Chart']) + ")")
                 if i < len(df_filtered) - 1:
                     st.divider()
-            
-            csv = df_filtered.to_csv(index=False)
-            st.download_button("📥 " + str(len(df_filtered)) + " Elite-Treffer als CSV", csv, "elite_scan_" + datetime.now().strftime('%Y%m%d_%H%M') + ".csv", 'text/c
