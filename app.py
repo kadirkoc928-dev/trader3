@@ -287,6 +287,3 @@ if st.button("🚀 ALLE AKTIEN SCANNEN", type="primary", use_container_width=Tru
                 col8.markdown(f"<span style='color:{'#00ff88' if row['MACD']=='Bullish' else '#ff4444'}'>{row['MACD']}</span>", unsafe_allow_html=True)
                 col9.markdown(f"[📈 Chart]({row['Chart']})")
                 if i < len(df_filtered) - 1: st.divider()
-            
-            csv = df_filtered.to_csv(index=False)
-            st.download_button(f"📥 {len(df_filtered)} Ergebnisse als CSV", csv, f"scan_{datetime.now
