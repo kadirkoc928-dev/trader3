@@ -314,4 +314,32 @@ if st.button("🚀 ELITE SCAN STARTEN", type="primary", use_container_width=True
             st.subheader("👑 Top 10 Elite-Kandidaten")
             top10 = df_filtered.head(10)
             for i, (_, row) in enumerate(top10.iterrows()):
-                with st.expander(f"#{i+1} {
+                with st.expander(f"#{i+1} {            st.markdown("---")
+            st.subheader("👑 Top 10 Elite-Kandidaten")
+            top10 = df_filtered.head(10)
+            for i, (_, row) in enumerate(top10.iterrows()):
+                expander_label = "#" + str(i+1) + " " + str(row['Ticker']) + " | Score: " + str(row['Elite-Score']) + "/100 | $" + str(row['Preis'])
+                with st.expander(expander_label, expanded=(i < 3)):
+                    c1, c2, c3, c4 = st.columns(4)
+                    with c1:
+                        st.metric("Elite-Score", str(row['Elite-Score']) + "/100")
+                        st.metric("Preis", "$" + str(row['Preis']))
+                    with c2:
+                        st.metric("RSI", str(row['RSI']))
+                        st.metric("ADX", str(row['ADX']))
+                    with c3:
+                        st.metric("RS-Rating", str(int(row['RS-Rating'])))
+                        st.metric("ATR%", str(row['ATR%']) + "%")
+                    with c4:
+                        st.metric("Vol Ratio", str(row['Vol Ratio']) + "x")
+                        st.metric("MACD", row['MACD'])
+                    st.markdown("**Badges:** " + str(row['Badges']))
+                    st.markdown("**Wavetrend:** " + str(row['Wavetrend']))
+                    st.markdown("[📈 TradingView 1-Tages-Chart](" + str(row['Chart']) + ")")
+        else:
+            st.warning("Keine Aktien mit Score >= " + str(min_score) + ". Filter lockern!")
+    else:
+        st.error("Keine Ergebnisse! Cache leeren & neu versuchen.")
+
+st.markdown("---")
+st.caption("⚠️ Keine Finanzberatung | Yahoo Finance (verzögert) | " + datetime.now().strftime('%d.%m.%Y %H:%M'))
